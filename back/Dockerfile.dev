@@ -1,0 +1,14 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependences
+COPY package*.json ./
+COPY prisma ./prisma/
+
+RUN npm install
+
+EXPOSE 3000
+
+# Generate client
+CMD sh -c "npx prisma generate && npm run dev"

@@ -1,26 +1,80 @@
 # Dayvibe
 
-## How to start the proyect
+## Prerequisites
 
-First you need to install the dependencies from backend and frontend 
+- [Node.js 20+](https://nodejs.org)
+- [Docker](https://docs.docker.com/get-docker/)
+
+## First time setup
+
+**1. Install dependencies**
 
 ```bash
-cd front 
-npm install 
+cd back && npm install && cd ..
+cd front && npm install
 ```
-and 
+
+**2. Set up environment variables**
 
 ```bash
-cd back 
-npm install 
+# Root — database credentials for Docker
+cp .env.example .env
+
+# Backend — database URL for Prisma
+cp back/.env.example back/.env
 ```
 
-Now need to start the servers, so two terminals run this commands 
-For frontend
-```bash 
-npm run dev
+Fill in your values in both `.env` files.
+
+**3. Start the database and run migrations**
+
+```bash
+docker compose up -d
+cd back && npx prisma migrate dev
 ```
-For backend
+
+## Running the project
+
+Open 3 terminals:
+
+```bash
+# Terminal 1 — from project root
+docker compose up -d
+
+# Terminal 2
+cd back && npm run dev
+
+# Terminal 3
+cd front && npm run dev
 ```
-npm start
+
+| Service  | URL                   |
+|----------|-----------------------|
+| Frontend | http://localhost:5173 |
+| Backend  | http://localhost:3000 |
+
+## Database
+
+```bash
+# Apply migrations after pulling changes that update the schema
+cd back && npx prisma migrate dev
+
+# Visual database explorer
+cd back && npx prisma studio
 ```
+## Stopping the project
+
+**Backend and frontend:** `Ctrl+C` in each terminal
+
+**Database:**
+
+```bash
+# Stop the container (keeps data, fast restart)
+docker compose stop
+
+# Stop and remove the container (data is safe in the volume)
+docker compose down
+```
+
+> `stop` vs `down`: both preserve your data. Use `stop` if you'll restart soon,
+> `down` for a clean shutdown. To restart after either, run `docker compose up -d`.
