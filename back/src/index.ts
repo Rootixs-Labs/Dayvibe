@@ -1,17 +1,18 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-import { prisma } from'./lib/prisma.js';
-dotenv.config();
+import { prisma } from './lib/prisma.js';
+import { env } from './config/env.js';
+import { notFound } from './middlewares/notFound.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { routes } from './routes/index.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// Global middlewares
 app.use(cors());
 app.use(express.json());
 
-// Verifies the server and database connection are alive
+// Health check: verifies the server and database connection are alive.
 app.get('/api/health', async (_req, res) => {
   try {
     await prisma.$queryRaw`SELECT 1`;
@@ -21,7 +22,12 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.use('/api', routes);
+
+// 404 and error handling must come after all routes.
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(env.port, () => {
+  console.log(`Server running on http://localhost:${env.port}`);
 });
