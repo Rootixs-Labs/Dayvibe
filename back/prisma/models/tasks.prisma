@@ -1,0 +1,37 @@
+model Task {
+  id          String     @id @default(uuid())
+  status      Status     @default(PENDING)
+  title       String     @db.VarChar(200)
+  description String     @db.VarChar(500)
+  link        String     @db.VarChar(2048)
+  importance  Importance @default(MEDIUM)
+  ofType      OfType     @default(GENERAL) @map("of_type")
+  dueAt       DateTime   @map("due_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String     @unique @map("user_id")
+
+  @@map("tasks")
+}
+
+enum Status {
+  COMPLETED
+  PENDING
+  OVERDUE
+  DELETED
+}
+
+enum OfType {
+  WORK
+  STUDY
+  EXERCISE
+  GENERAL
+  HEALTH
+}
+
+enum Importance {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
