@@ -1,17 +1,14 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "js"
+  binaryTargets          = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgresql"
-}
-
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  provider     = "postgresql"
+  relationMode = "foreignKeys"
 }
