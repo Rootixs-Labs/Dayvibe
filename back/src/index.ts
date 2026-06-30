@@ -22,7 +22,7 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-app.use('/api', routes);
+app.use('/api/v1', routes);
 
 // 404 and error handling must come after all routes.
 app.use(notFound);
