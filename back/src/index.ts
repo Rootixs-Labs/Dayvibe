@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { prisma } from './lib/prisma.js';
+import { prisma } from './lib/client.js';
 import { env } from './config/env.js';
 import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';

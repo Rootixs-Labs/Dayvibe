@@ -1,0 +1,24 @@
+model Profile {
+  id         String  @id @default(uuid())
+  bio        String? @db.VarChar(300)
+  pictureURL String? @map("picture_url")
+  theme      Theme   @default(SYSTEM)
+  pronoun    Pronoun @default(ANON)
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId     String  @unique @map("user_id")
+
+  @@map("profiles")
+}
+
+enum Pronoun {
+  HIM
+  THEY
+  HER
+  ANON
+}
+
+enum Theme {
+  DARK
+  LIGHT
+  SYSTEM
+}

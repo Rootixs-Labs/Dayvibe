@@ -8,8 +8,10 @@ model Task {
   ofType      OfType     @default(GENERAL) @map("of_type")
   dueAt       DateTime   @map("due_at")
   createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  deletedAt   DateTime?  @map("deleted_at")
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId      String     @unique @map("user_id")
+  userId      String     @map("user_id")
 
   @@map("tasks")
 }

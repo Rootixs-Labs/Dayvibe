@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma.js';
+import { prisma } from '../lib/client.js';
 import { ApiError } from '../utils/ApiError.js';
 import type {
   CreateUserInput,
