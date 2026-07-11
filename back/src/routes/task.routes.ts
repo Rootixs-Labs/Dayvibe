@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { taskController } from '../controllers/user.controller.js';
+import { taskController } from '../controllers/task.controller.js';
 
 // Routes for the User entity. Mounted under /api/users by the root router.
 const router = Router();
