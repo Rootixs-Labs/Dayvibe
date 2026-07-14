@@ -5,12 +5,11 @@ import { Importance, OfType, Status } from '../generated/prisma/enums.js';
 export const createTaskSchema = z.object({
   title: z.string().min(1),
   status: z.enum(Status),
-  description: z.string().optional(),
-  link: z.url({ protocol: /^https?$/ , normalize: true }).max(2048).optional(),
+  description: z.string(),
+  link: z.url({ protocol: /^https?$/ , normalize: true }).max(2048),
   importance: z.enum(Importance),
   ofType: z.enum(OfType),
-  dueAt: z.date().optional(), 
-  user: z.string(),
+  dueAt: z.date(), 
   userId: z.string(),
 });
 

@@ -15,7 +15,7 @@ export const taskService = {
   },
 
   // Returns a single task or throws a 404 if it does not exist.
-  async findById(id: string) {
+  async findTaskById(id: string) {
     const task = await prisma.task.findUnique({ where: { id } });
     if (!task) {
       throw ApiError.notFound(`task ${id} not found`);
@@ -23,26 +23,26 @@ export const taskService = {
     return task;
   },
 
-  // Creates a user, rejecting duplicate emails with a 409.
+  // Creates a task, rejecting duplicate titles on same user id with a 409.
   async create(data: CreateTaskInput) {
-    const existing = await prisma.task.findUnique({
-      where: { title: data.title },
+    const existing = await prisma.task.findFirst({
+      where: { title: data.title, userId : data.userId },
     });
     if (existing) {
-      throw ApiError.conflict(`Email ${data.email} is already in use`);
+      throw ApiError.conflict(`${data.title} already exists as a task`);
     }
-    return prisma.user.create({ data });
+    return prisma.task.create({ data });
   },
 
-  // Updates an existing user, ensuring it exists first for a clean 404.
+  // Updates an existing task, ensuring it exists first for a clean 404.
   async update(id: string, data: UpdateTaskInput) {
-    await userService.findById(id);
-    return prisma.user.update({ where: { id }, data });
+    await taskService.findTaskById(id);
+    return prisma.task.update({ where: { id }, data });
   },
 
-  // Deletes an existing user, ensuring it exists first for a clean 404.
+  // Deletes an existing task, ensuring it exists first for a clean 404.
   async remove(id: string) {
-    await userService.findById(id);
-    await prisma.user.delete({ where: { id } });
+    await taskService.findTaskById(id);
+    await prisma.task.delete({ where: { id } });
   },
 };
