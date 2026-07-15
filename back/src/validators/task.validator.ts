@@ -9,11 +9,11 @@ export const createTaskSchema = z.object({
   link: z.url({ protocol: /^https?$/ , normalize: true }).max(2048),
   importance: z.enum(Importance),
   ofType: z.enum(OfType),
-  dueAt: z.date(), 
+  dueAt: z.coerce.date(), 
   userId: z.string(),
 });
 
-// Body schema for updating a user. Every field is optional so callers
+// Body schema for updating a task. Every field is optional so callers
 // can send a partial update.
 export const updateTaskSchema = z.object({
   title: z.string().optional(),

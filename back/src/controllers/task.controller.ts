@@ -16,7 +16,7 @@ export const taskController = {
     
       async getById(req: Request, res: Response) {
         const { id } = TaskIdParamSchema.parse(req.params);
-        const task = await taskService.findById(id);
+        const task = await taskService.findTaskById(id);
         res.json({ success: true, data: task });
       },
     
